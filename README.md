@@ -158,17 +158,23 @@ Outputs saved to `output_dir`:
 
 All experiments use the same 80/20 stratified train/val split with `seed=42`.
 
+### Custom CNN: Iterative Improvement
 
-
+The Custom CNN was optimized through a series of controlled changes, each motivated by observations from the previous run:
+ 
+1. **Baseline** included dropout (0.3), but validation accuracy consistently exceeded training accuracy, indicating the model was not overfitting and regularization was unnecessarily limiting capacity. Dropout was removed for all subsequent experiments.
+2. **Increasing LR** (0.001 → 0.002) improved convergence speed, but introduced noticeable spikes in the validation accuracy curve — a sign the learning rate was too aggressive near the optimum.
+3. **Adding CosineAnnealingLR** resolved the instability by gradually decaying the learning rate over training, producing smoother and more stable validation curves.
+4. **Pushing LR further** (0.002 → 0.005) with the scheduler enabled even faster convergence while maintaining stability, achieving the best overall result.
 
 #### Custom CNN
 
-| Experiment | LR | Scheduler | Val Acc | AUC |
-|---|---|---|---|---|
-| CNN 01 | 0.001 | — | 0.9080 | 0.9692 |
-| CNN 02 | 0.002 | — | 0.9102 | 0.9717 |
-| CNN 03 | 0.002 | CosineAnnealing | 0.9076 | 0.9664 |
-| CNN 04 | 0.005 | CosineAnnealing | 0.9236 | 0.9774 |
+| Experiment | Dropout | LR | Scheduler | Val Acc | AUC |
+|---|---|---|---|---|---|
+| CNN 01 (baseline) | 0.3 | 0.001 | — | 0.9086 | 0.9698 |
+| CNN 02 | — | 0.002 | — | 0.9102 | 0.9717 |
+| CNN 03 | — | 0.002 | CosineAnnealing | 0.9076 | 0.9664 |
+| CNN 04 (best) | — | 0.005 | CosineAnnealing | **0.9236** | **0.9774** |
 
 ![CNN result](figs/compare_training_curve.png)
 
@@ -180,13 +186,20 @@ All experiments use the same 80/20 stratified train/val split with `seed=42`.
 | <img src="cnn_best_result/history.png" alt="CNN History" width="220"> | <img src="cnn_best_result/roc_curve.png" alt="ROC" width="220"> | <img src="cnn_best_result/confusion_matrix.png" alt="Confusion Matrix" width="220"> |<img src="cnn_best_result/calibration.png" alt="Reliable Diagram" width="220"> |
 
 
-#### Model Comparison
+### Architecture Comparison: Custom CNN vs ResNet18
+
+To fairly evaluate the Custom CNN against a pretrained model, ResNet18 was tested with the same training setup as the best Custom CNN (CosineAnnealing) for a controlled comparison.
 
 | Experiment | Val Acc | Precision | Recall | AUC |
 |---|---|---|---|---|
 | Custom CNN (best) | 0.9236 | 0.9179| 0.9304 | 0.9774 |
 | ResNet18 + CosineAnnealing | 0.9820 | 0.9847 | 0.9792 | 0.9984 |
 
+### Key Takeaways
+
+- ResNet18 achieved 98.2% accuracy while training only 1,026 parameters (frozen backbone), demonstrating that ImageNet-pretrained features transfer effectively even to a simple binary task.
+- The Custom CNN improved from 90.8% to 92.4% through systematic training strategy optimization alone, without any changes to the model architecture.
+- The reliability diagram shows that the Custom CNN tends to be slightly overconfident in its predictions, while ResNet18 is better calibrated.
 
 ## Project Structure
 ```
