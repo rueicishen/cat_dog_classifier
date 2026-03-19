@@ -35,6 +35,29 @@ Training dataset can be downloaded from: https://duke.box.com/s/ievtjw55j5ozmcou
 The dataset contains 20,000 images (10,000 cats, 10,000 dogs) — balanced classes, so no class weighting is required.
 The dataset is automatically split into train and validation sets using a stratified random split (default 80/20, reproducible via seed in `config.yaml`).
 
+## Models
+
+#### CustomCNN
+A lightweight CNN trained from scratch with 3 convolutional blocks followed by a fully connected classifier head.
+```
+Conv(3→32) → BN → ReLU → MaxPool
+Conv(32→64) → BN → ReLU → MaxPool
+Conv(64→128) → BN → ReLU → AdaptiveAvgPool(4×4)
+Flatten → Linear(2048→256) → ReLU → Linear(256→2)
+```
+![Custom CNN output](figs/customcnn.jpg)
+
+#### BaseResNet18
+Pretrained ResNet-18 (ImageNet weights) with the final fully connected layer replaced for binary classification. The backbone is frozen by default so only the classifier head is trained.
+
+#### Comparison
+
+| Model | Pretrained | Total Parameters | Trainable Parameters | Input Size |
+|---|---|---|---|---|
+| CustomCNN | No | 618,754 | 618,754 | 224×224 |
+| ResNet18 | Yes (ImageNet) | 11,177,538 | 1,026 | 224×224 |
+
+
 ## Usage
 
 ### Configuration
@@ -130,27 +153,6 @@ Outputs saved to `output_dir`:
 | `compare_reliability_diagram.png` | Reliability diagram comparison |
 | Console | Accuracy / Precision / Recall / AUC summary table |
 
-## Models
-
-#### CustomCNN
-A lightweight CNN trained from scratch with 3 convolutional blocks followed by a fully connected classifier head.
-```
-Conv(3→32) → BN → ReLU → MaxPool
-Conv(32→64) → BN → ReLU → MaxPool
-Conv(64→128) → BN → ReLU → AdaptiveAvgPool(4×4)
-Flatten → Linear(2048→256) → ReLU → Linear(256→2)
-```
-![Custom CNN output](figs/customcnn.jpg)
-
-#### BaseResNet18
-Pretrained ResNet-18 (ImageNet weights) with the final fully connected layer replaced for binary classification. The backbone is frozen by default so only the classifier head is trained.
-
-#### Comparison
-
-| Model | Pretrained | Total Parameters | Trainable Parameters | Input Size |
-|---|---|---|---|---|
-| CustomCNN | No | 618,754 | 618,754 | 224×224 |
-| ResNet18 | Yes (ImageNet) | 11,177,538 | 1,026 | 224×224 |
 
 ## Experiment Results
 
