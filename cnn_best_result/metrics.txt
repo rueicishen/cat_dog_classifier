@@ -1,0 +1,8 @@
+Accuracy: 0.9236
+Precision: 0.9179
+Recall: 0.9304
+
+Classification Report:
+                      precision     recall   f1-score
+                 cat       0.93       0.92       0.92
+                 dog       0.92       0.93       0.92

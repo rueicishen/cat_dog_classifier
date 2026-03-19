@@ -11,18 +11,12 @@ from sklearn.metrics import (
 
 # Modify input here ──────────────────────────────────────────────────
 data_dir = [
-    "experiments/custom_cnn/exp04_baseline_50epoch",
-    "experiments/custom_cnn/exp05_lr002_50epoch",
-    "experiments/custom_cnn/exp06_lr002_cos_50",
     "experiments/custom_cnn/exp07_lr005_cos_50",
-    # "experiments/resnet18/exp01_baseline",
+    "experiments/resnet18/exp02_cos",
 ]
 data_name = [
-    "CNN01",
-    "CNN02",
-    "CNN03",
-    "CNN04",
-    # "ResNet18",
+    "CustomCNN",
+    "ResNet18",
 ]
 output_dir = "outputs/comparison"
 # ─────────────────────────────────────────────────────────────────────────────
