@@ -1,0 +1,19 @@
+data:
+  train_dir: ./data/train
+  test_dir: ./data/test
+  val_split: 0.2
+  batch_size: 32
+  seed: 42
+
+training:
+  epochs: 10
+  learning_rate: 0.005
+  dropout: 0
+  scheduler: cosine   # cosine, plateau, or none
+
+models:
+  base_resnet18:
+    freeze_backbone: true
+    output_dir: ./outputs/base_resnet18
+  custom_cnn:
+    output_dir: ./outputs/custom_cnn
