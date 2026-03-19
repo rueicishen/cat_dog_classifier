@@ -1,0 +1,8 @@
+venv
+.DS_Store
+.vscode/
+__pycache__
+.pytest_cache
+data/
+experiments/
+outputs/
