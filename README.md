@@ -3,6 +3,7 @@
 ## Background
 This repository implements a binary image classifier that distinguishes between cats and dogs using deep learning. The project explores two model architectures: a custom CNN trained from scratch and a pretrained ResNet-18 fine-tuned via transfer learning, including a full pipeline for training, evaluation, and result comparison.
 
+
 ## Install
 
 #### 1. Create and activate a virtual environment
@@ -139,6 +140,7 @@ Conv(32→64) → BN → ReLU → MaxPool
 Conv(64→128) → BN → ReLU → AdaptiveAvgPool(4×4)
 Flatten → Linear(2048→256) → ReLU → Linear(256→2)
 ```
+![Custom CNN output](outputs/customcnn.jpg)
 
 #### BaseResNet18
 Pretrained ResNet-18 (ImageNet weights) with the final fully connected layer replaced for binary classification. The backbone is frozen by default so only the classifier head is trained.
@@ -154,14 +156,26 @@ Pretrained ResNet-18 (ImageNet weights) with the final fully connected layer rep
 
 All experiments use the same 80/20 stratified train/val split with `seed=42`.
 
+
+
+
 #### Custom CNN
 
-| Experiment | Dropout | LR | Scheduler | Val Acc | AUC |
-|---|---|---|---|---|---|
-| CNN baseline | 0.3 | 0.001 | — | 0.8068(10) | 0.8866(10) |
-| CNN no dropout | — | 0.001 | — | 0.9080 | 0.9692 |
-| CNN high lr | — | 0.002 | — | 0.9102 | 0.9717 |
-| CNN high lr + Cosine | — | 0.005 | CosineAnnealing | 0.9236 | 0.9774 |
+| Experiment | LR | Scheduler | Val Acc | AUC |
+|---|---|---|---|---|
+| CNN 01 | 0.001 | — | 0.9080 | 0.9692 |
+| CNN 02 | 0.002 | — | 0.9102 | 0.9717 |
+| CNN 03 | 0.002 | CosineAnnealing | 0.9076 | 0.9664 |
+| CNN 04 | 0.005 | CosineAnnealing | 0.9236 | 0.9774 |
+
+![CNN result](outputs/comparison/compare_training_curve.png)
+
+
+#### Best Custom CNN Result
+
+| History | ROC | Confusion Matrix | Reliable Diagram |
+|---|---|---|---|
+| <img src="cnn_best_result/history.png" alt="CNN History" width="220"> | <img src="cnn_best_result/roc_curve.png" alt="ROC" width="220"> | <img src="cnn_best_result/confusion_matrix.png" alt="Confusion Matrix" width="220"> |<img src="cnn_best_result/calibration.png" alt="Reliable Diagram" width="220"> |
 
 
 #### Model Comparison
@@ -170,7 +184,7 @@ All experiments use the same 80/20 stratified train/val split with `seed=42`.
 |---|---|---|---|---|
 | Custom CNN (best) | 0.9236 | 0.9179| 0.9304 | 0.9774 |
 | ResNet18 + CosineAnnealing | 0.9820 | 0.9847 | 0.9792 | 0.9984 |
-| ResNet18 + ReduceLROnPlateau | 0.9812 | 0.9797 | 0.9828 | 0.9984 |
+
 
 ## Project Structure
 ```
