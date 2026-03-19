@@ -140,7 +140,7 @@ Conv(32→64) → BN → ReLU → MaxPool
 Conv(64→128) → BN → ReLU → AdaptiveAvgPool(4×4)
 Flatten → Linear(2048→256) → ReLU → Linear(256→2)
 ```
-![Custom CNN output](outputs/customcnn.jpg)
+![Custom CNN output](figs/customcnn.jpg)
 
 #### BaseResNet18
 Pretrained ResNet-18 (ImageNet weights) with the final fully connected layer replaced for binary classification. The backbone is frozen by default so only the classifier head is trained.
@@ -168,7 +168,7 @@ All experiments use the same 80/20 stratified train/val split with `seed=42`.
 | CNN 03 | 0.002 | CosineAnnealing | 0.9076 | 0.9664 |
 | CNN 04 | 0.005 | CosineAnnealing | 0.9236 | 0.9774 |
 
-![CNN result](outputs/comparison/compare_training_curve.png)
+![CNN result](figs/compare_training_curve.png)
 
 
 #### Best Custom CNN Result
