@@ -66,8 +66,8 @@ def evaluate(model, val_loader, criterion, device):
             loss = criterion(output, labels)
             total_loss += loss.item() * images.size(0)
 
-            predictions = torch.argmax(output, dim=1)
-            correct += torch.sum((predictions == labels).float()).item()
+            preds = output.argmax(dim=1)
+            correct += (preds == labels).sum().item()
             total += labels.size(0)
 
     epoch_loss = total_loss / total
